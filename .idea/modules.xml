@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://E:\Works\Android\Projects\Example\0001\VolleyPlus\MyVollySample.iml" filepath="E:\Works\Android\Projects\Example\0001\VolleyPlus\MyVollySample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/VolleyPlus.iml" filepath="$PROJECT_DIR$/VolleyPlus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/volleyplus/volleyplus.iml" filepath="$PROJECT_DIR$/volleyplus/volleyplus.iml" />
+    </modules>
+  </component>
+</project>
