@@ -17,7 +17,7 @@ import java.util.Map;
  * Created by SIARAY on 9/15/2017.
  */
 
-public class JsonArrayRequest {
+public class JsonArrayRequest extends ir.siaray.volleyplus.request.Request{
 
     private String mUrl;
     private Context mContext;
@@ -35,6 +35,7 @@ public class JsonArrayRequest {
     private byte[] mBody;
 
     private JsonArrayRequest(Context context, String url) {
+        super(context);
         mContext = context;
         mUrl = url;
     }

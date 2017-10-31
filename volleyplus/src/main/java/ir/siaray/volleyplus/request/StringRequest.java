@@ -16,7 +16,7 @@ import java.util.Map;
  * Created by SIARAY on 9/15/2017.
  */
 
-public class StringRequest {
+public class StringRequest extends ir.siaray.volleyplus.request.Request{
 
     private String mUrl;
     private Context mContext;
@@ -27,22 +27,20 @@ public class StringRequest {
     private int mTimeout = DefaultRetryPolicy.DEFAULT_TIMEOUT_MS;
     private int mNumberOfRetries = DefaultRetryPolicy.DEFAULT_MAX_RETRIES;
     private float mBackoffMultiplier = DefaultRetryPolicy.DEFAULT_BACKOFF_MULT;
-    //..............
     private Map<String, String> mParams;
     private Listener<String> mListener;
     private ErrorListener mErrorListener;
     private byte[] mBody;
 
     private StringRequest(Context context, String url) {
+        super(context);
         mContext = context;
         mUrl = url;
     }
 
-    //..........
     public static StringRequest getInstance(Context context, String url) {
         return (new StringRequest(context, url));
     }
-
 
     public StringRequest setMethod(int method) {
         mMethod = method;
@@ -78,8 +76,6 @@ public class StringRequest {
         mBackoffMultiplier = backoffMultiplier;
         return this;
     }
-
-    //............
 
     public StringRequest setParams(Map<String, String> params) {
         mParams = params;

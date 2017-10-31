@@ -7,6 +7,7 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
+
 import ir.siaray.volleyplus.VolleyPlus;
 
 import org.json.JSONObject;
@@ -17,7 +18,7 @@ import java.util.Map;
  * Created by SIARAY on 9/15/2017.
  */
 
-public class JsonObjectRequest {
+public class JsonObjectRequest extends ir.siaray.volleyplus.request.Request {
 
     private String mUrl;
     private Context mContext;
@@ -28,18 +29,17 @@ public class JsonObjectRequest {
     private int mTimeout = DefaultRetryPolicy.DEFAULT_TIMEOUT_MS;
     private int mNumberOfRetries = DefaultRetryPolicy.DEFAULT_MAX_RETRIES;
     private float mBackoffMultiplier = DefaultRetryPolicy.DEFAULT_BACKOFF_MULT;
-    //..............
     private JSONObject mParams;
     private Listener<JSONObject> mListener;
     private ErrorListener mErrorListener;
     private byte[] mBody;
 
     private JsonObjectRequest(Context context, String url) {
+        super(context);
         mContext = context;
         mUrl = url;
     }
 
-    //............
     public static JsonObjectRequest getInstance(Context context, String url) {
         return (new JsonObjectRequest(context, url));
     }
@@ -120,7 +120,7 @@ public class JsonObjectRequest {
                     }
 
                     @Override
-                    public byte[] getBody(){
+                    public byte[] getBody() {
                         return (mBody != null) ? mBody : (super.getBody());
                     }
                 };

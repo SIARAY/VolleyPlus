@@ -9,6 +9,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+
+import ir.siaray.volleyplus.util.Log;
 import ir.siaray.volleyplus.util.LruBitmapCache;
 
 import java.io.UnsupportedEncodingException;
@@ -32,6 +34,7 @@ public class VolleyPlus {
     }
 
     public static VolleyPlus initialize(Context context) {
+        Log.i("initialize");
         return new VolleyPlus(context);
     }
 
@@ -76,7 +79,6 @@ public class VolleyPlus {
         return false;
     }
 
-    ///.......................
     public static String getCache(String url) {
         //دریافت دیتای کش شده برای url خاص
         Cache cache = VolleyPlus.getInstance().getRequestQueue().getCache();
@@ -96,23 +98,37 @@ public class VolleyPlus {
         return null;
     }
 
+    /**
+     * بی اعتبار کردن (باطل کردن) کش برای url خاص (کش حذف نمی شود)
+     *
+     * @param url
+     */
     public static void invalidateVolleyCache(String url) {
-        //بی اعتبار کردن (باطل کردن) کش برای url خاص (کش حذف نمی شود)
         VolleyPlus.getInstance().getRequestQueue().getCache().invalidate(url, true);
     }
 
+    /**
+     * خاموش کردن(غیرفعال کردن) کش برای درخواست خاص
+     *
+     * @param request
+     */
     public static void disableCache(Request request) {
-        //خاموش کردن(غیرفعال کردن) کش برای درخواست خاص
         request.setShouldCache(false);
     }
 
+    /**
+     * حذف کش(Cache) مربوط به یک دامنه خاص
+     *
+     * @param url
+     */
     public static void clearCache(String url) {
-        //حذف کش(Cache) مربوط به یک دامنه خاص
         VolleyPlus.getInstance().getRequestQueue().getCache().remove(url);
     }
 
+    /**
+     * حذف تمامی کش(Cache)ها
+     */
     public static void clearCache() {
-        //حذف تمامی کش(Cache)ها
         VolleyPlus.getInstance().getRequestQueue().getCache().clear();
     }
 
@@ -124,8 +140,6 @@ public class VolleyPlus {
         }
         //Request is null (The request can not be canceled)
         return false;
-
-
     }
 
     /**

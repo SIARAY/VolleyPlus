@@ -1,14 +1,15 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion COMPILE_SDK_VERSION as int
+    buildToolsVersion BUILD_TOOLS_VERSION as String
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion TARGET_SDK_VERSION as int
+        versionCode LIBRARY_VERSION_CODE as int
+        versionName LIBRARY_VERSION_NAME as String
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -21,9 +22,26 @@ android {
     }
 }
 
+android {
+    lintOptions {
+        abortOnError false
+    }
+    buildToolsVersion '26.0.2'
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:26.0.0-beta2'
-    testCompile 'junit:junit:4.12'
     compile 'com.android.volley:volley:1.1.0-rc1'
+}
+
+publish {
+    userOrg = USER_NAME as String
+    groupId = GROUP as String
+    artifactId = LIBRARY_ARTIFACT_ID as String
+    uploadName = UPLOAD_NAME as String
+    publishVersion = LIBRARY_VERSION_NAME as String
+    desc = LIBRARY_DESCRIPTION as String
+    website = GITHUB_URL as String
+    issueTracker = ISSUE_TRACKER as String
 }
