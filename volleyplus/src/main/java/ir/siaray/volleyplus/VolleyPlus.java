@@ -3,13 +3,22 @@ package ir.siaray.volleyplus;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
+import com.android.volley.ClientError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
+import ir.siaray.volleyplus.listener.ParseVolleyErrorListener;
 import ir.siaray.volleyplus.util.Log;
 import ir.siaray.volleyplus.util.LruBitmapCache;
 
@@ -34,7 +43,6 @@ public class VolleyPlus {
     }
 
     public static VolleyPlus initialize(Context context) {
-        Log.i("initialize");
         return new VolleyPlus(context);
     }
 
@@ -162,5 +170,25 @@ public class VolleyPlus {
         request.setRetryPolicy(new DefaultRetryPolicy(initialTimeoutMs
                 , maxNumRetries
                 , backoffMultiplier));
+    }
+
+    public static void parseVolleyError(VolleyError error, ParseVolleyErrorListener listener) {
+        if (listener == null)
+            return;
+        if (error instanceof TimeoutError) {
+            listener.onTimeoutError(error);
+        } else if (error instanceof NoConnectionError) {
+            listener.onNoConnectionError(error);
+        } else if (error instanceof AuthFailureError) {
+            listener.onAuthFailureError(error);
+        } else if (error instanceof ClientError) {
+            listener.onClientError(error);
+        } else if (error instanceof ServerError) {
+            listener.onServerError(error);
+        } else if (error instanceof NetworkError) {
+            listener.onNetworkError(error);
+        } else if (error instanceof ParseError) {
+            listener.onParseError(error);
+        }
     }
 }

@@ -80,9 +80,9 @@ public class JsonArrayRequest extends ir.siaray.volleyplus.request.Request{
         return this;
     }
 
-    //............
-    public void setmBody(byte[] mBody) {
-        this.mBody = mBody;
+    public JsonArrayRequest setBody(byte[] body) {
+        this.mBody = body;
+        return this;
     }
 
     public JsonArrayRequest setParams(JSONArray params) {

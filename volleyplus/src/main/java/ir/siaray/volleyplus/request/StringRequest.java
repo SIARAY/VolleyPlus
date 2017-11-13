@@ -88,8 +88,8 @@ public class StringRequest extends ir.siaray.volleyplus.request.Request{
         return this;
     }
 
-    public StringRequest setmBody(byte[] mBody) {
-        this.mBody = mBody;
+    public StringRequest setBody(byte[] body) {
+        this.mBody = body;
         return this;
     }
 

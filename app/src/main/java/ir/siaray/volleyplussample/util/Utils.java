@@ -1,4 +1,4 @@
-package ir.siaray.volleyplussample.classes;
+package ir.siaray.volleyplussample.util;
 
 import android.view.View;
 import android.widget.ProgressBar;
@@ -9,13 +9,13 @@ import android.widget.ProgressBar;
 
 public class Utils {
 
-    public static void showProgressDialog(ProgressBar progressbar) {
+    public static void showProgressBar(ProgressBar progressbar) {
         if (progressbar.getVisibility() != View.VISIBLE) {
             progressbar.setVisibility(View.VISIBLE);
         }
     }
 
-    public static void hideProgressDialog(ProgressBar progressbar) {
+    public static void hideProgressBar(ProgressBar progressbar) {
         if (progressbar.getVisibility() != View.INVISIBLE) {
             progressbar.setVisibility(View.INVISIBLE);
         }

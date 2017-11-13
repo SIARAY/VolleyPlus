@@ -6,7 +6,7 @@ Using faster and easier than Volley
 ##### Dependency
 
     dependencies {
-        compile 'ir.siaray:volleyplus:1.0.0'
+        compile 'ir.siaray:volleyplus:1.0.1'
     }
 
 ## License

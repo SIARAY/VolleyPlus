@@ -79,10 +79,10 @@ public class JsonObjectRequest extends ir.siaray.volleyplus.request.Request {
         return this;
     }
 
-    //............
 
-    public void setmBody(byte[] mBody) {
-        this.mBody = mBody;
+    public JsonObjectRequest setBody(byte[] body) {
+        this.mBody = body;
+        return this;
     }
 
     public JsonObjectRequest setParams(JSONObject params) {
@@ -95,7 +95,6 @@ public class JsonObjectRequest extends ir.siaray.volleyplus.request.Request {
         mErrorListener = errorListener;
         return this;
     }
-
 
     public void send() {
         sendRequest();

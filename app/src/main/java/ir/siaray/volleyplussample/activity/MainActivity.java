@@ -1,30 +1,27 @@
-package ir.siaray.volleyplussample.activities;
+package ir.siaray.volleyplussample.activity;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
+import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+
+import ir.siaray.volleyplus.listener.ParseVolleyErrorListener;
+import ir.siaray.volleyplus.util.Log;
 import ir.siaray.volleyplussample.R;
 import ir.siaray.volleyplus.VolleyPlus;
 import ir.siaray.volleyplus.request.JsonObjectRequest;
 import ir.siaray.volleyplus.request.StringRequest;
 
-import ir.siaray.volleyplussample.classes.Constants;
-import ir.siaray.volleyplussample.classes.Strings;
-import ir.siaray.volleyplussample.classes.Utils;
+import ir.siaray.volleyplussample.model.TestModel;
+import ir.siaray.volleyplussample.util.Constants;
+import ir.siaray.volleyplussample.util.Strings;
+import ir.siaray.volleyplussample.util.Utils;
 
 import ir.siaray.volleyplus.request.JsonArrayRequest;
 
@@ -35,12 +32,14 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static ir.siaray.volleyplussample.util.Constants.REQUEST_BACK_OFF_MULTIPLAIER;
+import static ir.siaray.volleyplussample.util.Constants.REQUEST_NUM_OF_RETRY;
+import static ir.siaray.volleyplussample.util.Constants.REQUEST_TIME_OUT;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ProgressDialog progressDialog;
-    private String lastRequest = null;
+    private String lastRequestTag = null;
     private ProgressBar progressbar;
-    private Request.Priority priority = Request.Priority.HIGH;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initUi() {
-        progressDialog = new ProgressDialog(this);
-        progressbar = (ProgressBar) findViewById(R.id.progressbar);
+        progressbar = findViewById(R.id.progressbar);
         (findViewById(R.id.btnJsonObject)).setOnClickListener(this);
         (findViewById(R.id.btnJsonArray)).setOnClickListener(this);
         (findViewById(R.id.btnJsonString)).setOnClickListener(this);
@@ -76,36 +74,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         , Strings.TAG_JSON_STRING);
                 break;
             case R.id.btnCancelRequest:
-                if (!VolleyPlus.cancelRequest(lastRequest)) {
-                    Toast.makeText(this, "Request is null", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
-                    Utils.hideProgressDialog(progressbar);
-                }
+                cancelRequest();
                 break;
         }
     }
 
-    public void sendJsonStringRequest(String url, String reqTag) {
-        lastRequest = reqTag;
-        Utils.showProgressDialog(progressbar);
+    private void cancelRequest() {
+        if (!VolleyPlus.cancelRequest(lastRequestTag)) {
+            Toast.makeText(this, "Request is null", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, lastRequestTag + " Canceled", Toast.LENGTH_SHORT).show();
+            Utils.hideProgressBar(progressbar);
+            lastRequestTag = null;
+        }
+    }
 
-        //StringRequest stringRequest=
+    public void sendJsonStringRequest(String url, String reqTag) {
+        lastRequestTag = reqTag;
+        Utils.showProgressBar(progressbar);
+
         StringRequest.getInstance(this, url)
                 .setTag(reqTag)
-                .setParams(getStringRequestParameters())
-                .setMethod(Request.Method.POST)
+                //.setParams(getStringRequestParameters())
+                .setMethod(Request.Method.GET)
                 .setListener(new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        showResponseToast(response);
-                        Utils.hideProgressDialog(progressbar);
+                        showResponse(response);
+                        Utils.hideProgressBar(progressbar);
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        showErrorToast(error);
-                        Utils.hideProgressDialog(progressbar);
+                        showError(error);
+                        Utils.hideProgressBar(progressbar);
                     }
                 })
                 .send();
@@ -113,50 +115,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void sendJsonArrayRequest(String url, String reqTag) {
-        lastRequest = reqTag;
-        Utils.showProgressDialog(progressbar);
+        lastRequestTag = reqTag;
+        Utils.showProgressBar(progressbar);
 
         JsonArrayRequest.getInstance(this, url)
                 .setTag(reqTag)
-                .setParams(getJsonArrayParameters())
-                .setMethod(Request.Method.POST)
+                //.setParams(getJsonArrayParameters())
+                .setMethod(Request.Method.GET)
                 .setListener(new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        showResponseToast(response);
-                        Utils.hideProgressDialog(progressbar);
+                        showResponse(response);
+                        Utils.hideProgressBar(progressbar);
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        showErrorToast(error);
-                        Utils.hideProgressDialog(progressbar);
+                        showError(error);
+                        Utils.hideProgressBar(progressbar);
                     }
                 })
                 .send();
     }
 
     private void sendJsonObjectRequest(String url, String reqTag) {
-        lastRequest = reqTag;
-        Utils.showProgressDialog(progressbar);
+        lastRequestTag = reqTag;
+        Utils.showProgressBar(progressbar);
 
         JsonObjectRequest.getInstance(this, url)
                 .setTag(reqTag)
-                .setParams(getJsonObjectParameters())
-                .setMethod(Request.Method.POST)
+                //.setParams(getJsonObjectParameters())
+                //.setHeader(getHeader())
+                .setMethod(Request.Method.GET)
+                .setTimeout(REQUEST_TIME_OUT)
+                .setNumberOfRetries(REQUEST_NUM_OF_RETRY)
+                .setBackoffMultiplier(REQUEST_BACK_OFF_MULTIPLAIER)
+                .setPriority(Request.Priority.HIGH)
                 .setListener(new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        showResponseToast(response);
-                        Utils.hideProgressDialog(progressbar);
+                        showResponse(response);
+                        Utils.hideProgressBar(progressbar);
 
+                        //TestModel object = JSON.parseObject(response.toString(), TestModel.class);
+                        //Log.printItems(object);
+                        //Toast.makeText(MainActivity.this, "Email: " + object.getEmail(), Toast.LENGTH_SHORT).show();
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        showErrorToast(error);
-                        Utils.hideProgressDialog(progressbar);
+                        showError(error);
+                        Utils.hideProgressBar(progressbar);
                     }
                 })
                 .send();
@@ -170,7 +180,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return params;
     }
 
-    private JSONObject getJsonObjectParameters() {
+    private Map<String, String> getHeader() {
+        Map<String, String>  headers = new HashMap<String, String>();
+        headers.put("header1","value1");
+        headers.put("header2","value2");
+        return headers;
+    }
+
+   private JSONObject getJsonObjectParameters() {
         Map<String, String> params = new HashMap<String, String>();
         params.put("name", "Androidhive");
         params.put("email", "abc@androidhive.info");
@@ -191,31 +208,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private void showErrorToast(VolleyError error) {
-        if (error instanceof TimeoutError) {
-            Log.d(Strings.TAG, "TimeoutError: " + error.getMessage());
-        } else if (error instanceof NoConnectionError) {
-            Log.d(Strings.TAG, "NoConnectionError: " + error.getMessage());
-        } else if (error instanceof AuthFailureError) {
-            Log.d(Strings.TAG, "AuthFailureError: " + error.getMessage());
-        } else if (error instanceof ServerError) {
-            Log.d(Strings.TAG, "ServerError: " + error.getMessage());
-        } else if (error instanceof NetworkError) {
-            Log.d(Strings.TAG, "NetworkError: " + error.getMessage());
-        } else if (error instanceof ParseError) {
-            Log.d(Strings.TAG, "ParseError: " + error.getMessage());
-        }
+    private void showError(VolleyError error) {
+        lastRequestTag = null;
+        VolleyPlus.parseVolleyError(error, new ParseVolleyErrorListener() {
+            @Override
+            public void onTimeoutError(VolleyError error) {
+                Log.i("TimeoutError: " + error.getMessage());
+            }
+
+            @Override
+            public void onNoConnectionError(VolleyError error) {
+                Log.i("NoConnectionError: " + error.getMessage());
+            }
+
+            @Override
+            public void onAuthFailureError(VolleyError error) {
+                Log.i("AuthFailureError: " + error.getMessage());
+            }
+
+            @Override
+            public void onClientError(VolleyError error) {
+                Log.i("ClientError: " + error.getMessage());
+            }
+
+            @Override
+            public void onServerError(VolleyError error) {
+                Log.i("ServerError: " + error.getMessage());
+            }
+
+            @Override
+            public void onNetworkError(VolleyError error) {
+                Log.i("NetworkError: " + error.getMessage());
+            }
+
+            @Override
+            public void onParseError(VolleyError error) {
+                Log.i("ParseError: " + error.getMessage());
+            }
+        });
         Toast.makeText(MainActivity.this
                 , "Error: " + error.getMessage()
                         + " \ntime: " + error.getNetworkTimeMs()
                         + " \ncause: " + error.getCause()
                         + " \nlm: " + error.getLocalizedMessage()
-                        + " \nst: " + error.getStackTrace()
                 , Toast.LENGTH_LONG).show();
     }
 
-    private void showResponseToast(Object response) {
-        Log.d(Strings.TAG, response.toString());
+    private void showResponse(Object response) {
+        lastRequestTag = null;
+        Log.i(response.toString());
         Toast.makeText(MainActivity.this
                 , "response: " + response
                 , Toast.LENGTH_LONG).show();

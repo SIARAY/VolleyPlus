@@ -1,4 +1,4 @@
-package ir.siaray.volleyplussample.classes;
+package ir.siaray.volleyplussample.util;
 
 /**
  * Created by Siamak on 06/08/2017.
