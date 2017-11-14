@@ -1,6 +1,10 @@
 ## VolleyPlus
 Using faster and easier than Volley
 
+## Screenshots
+
+![Screenshot](https://s1.gifyu.com/images/volleyplus-v1.0.1.gif)
+
 ## Getting started
 
 ##### Dependency
@@ -8,6 +12,50 @@ Using faster and easier than Volley
     dependencies {
         compile 'ir.siaray:volleyplus:1.0.1'
     }
+
+## Usage
+
+##### To send json object request.
+
+            JsonObjectRequest.getInstance(this, url)
+                    .setTag(tag)
+                    .setParams(params)
+                    .setHeader(header)
+                    .setMethod(method)
+                    .setTimeout(timeout)
+                    .setNumberOfRetries(numOfRetry)
+                    .setBackoffMultiplier(backoffMultiplier)
+                    .setPriority(priorityp)
+                    .setListener(listener, errorListener)
+                    .send();
+
+##### To send json array request.
+
+            JsonArrayRequest.getInstance(this, url)
+                    .setTag(tag)
+                    .setParams(params)
+                    .setHeader(header)
+                    .setMethod(method)
+                    .setTimeout(timeout)
+                    .setNumberOfRetries(numOfRetry)
+                    .setBackoffMultiplier(backoffMultiplier)
+                    .setPriority(priorityp)
+                    .setListener(listener, errorListener)
+                    .send();
+
+##### To send string request.
+
+            StringRequest.getInstance(this, url)
+                    .setTag(tag)
+                    .setParams(params)
+                    .setHeader(header)
+                    .setMethod(method)
+                    .setTimeout(timeout)
+                    .setNumberOfRetries(numOfRetry)
+                    .setBackoffMultiplier(backoffMultiplier)
+                    .setPriority(priorityp)
+                    .setListener(listener, errorListener)
+                    .send();
 
 ## License
 
