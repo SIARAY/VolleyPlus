@@ -10,7 +10,7 @@ Using faster and easier than Volley
 ##### Dependency
 
     dependencies {
-        compile 'ir.siaray:volleyplus:1.0.1'
+        compile 'ir.siaray:volleyplus:1.0.2'
     }
 
 ## Usage
@@ -25,7 +25,7 @@ Using faster and easier than Volley
                     .setTimeout(timeout)
                     .setNumberOfRetries(numOfRetry)
                     .setBackoffMultiplier(backoffMultiplier)
-                    .setPriority(priorityp)
+                    .setPriority(priority)
                     .setListener(listener, errorListener)
                     .send();
 
@@ -39,7 +39,7 @@ Using faster and easier than Volley
                     .setTimeout(timeout)
                     .setNumberOfRetries(numOfRetry)
                     .setBackoffMultiplier(backoffMultiplier)
-                    .setPriority(priorityp)
+                    .setPriority(priority)
                     .setListener(listener, errorListener)
                     .send();
 
@@ -53,7 +53,7 @@ Using faster and easier than Volley
                     .setTimeout(timeout)
                     .setNumberOfRetries(numOfRetry)
                     .setBackoffMultiplier(backoffMultiplier)
-                    .setPriority(priorityp)
+                    .setPriority(priority)
                     .setListener(listener, errorListener)
                     .send();
 

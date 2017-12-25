@@ -31,14 +31,14 @@ import ir.siaray.volleyplus.util.LruBitmapCache;
  */
 
 public class VolleyPlus {
-    public static final String TAG = VolleyPlus.class.getSimpleName();
+    private static final String TAG = VolleyPlus.class.getSimpleName();
     private static VolleyPlus mInstance;
-    private final Context mContext;
+    private Context mContext;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
 
     private VolleyPlus(Context context) {
-        mContext = context;
+        mContext = context.getApplicationContext();
         mInstance = this;
     }
 
@@ -46,7 +46,7 @@ public class VolleyPlus {
         return new VolleyPlus(context);
     }
 
-    public static synchronized VolleyPlus getInstance() {
+    public static VolleyPlus getInstance() {
         return mInstance;
     }
 

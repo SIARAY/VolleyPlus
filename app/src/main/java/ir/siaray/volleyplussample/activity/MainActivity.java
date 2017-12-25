@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -18,7 +17,6 @@ import ir.siaray.volleyplus.VolleyPlus;
 import ir.siaray.volleyplus.request.JsonObjectRequest;
 import ir.siaray.volleyplus.request.StringRequest;
 
-import ir.siaray.volleyplussample.model.TestModel;
 import ir.siaray.volleyplussample.util.Constants;
 import ir.siaray.volleyplussample.util.Strings;
 import ir.siaray.volleyplussample.util.Utils;
@@ -159,8 +157,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Utils.hideProgressBar(progressbar);
 
                         //TestModel object = JSON.parseObject(response.toString(), TestModel.class);
-                        //Log.printItems(object);
-                        //Toast.makeText(MainActivity.this, "Email: " + object.getEmail(), Toast.LENGTH_SHORT).show();
+                        //Log.printObject(object);
+                        //Toast.makeText(MainActivity.this, "Email: " + object.getEmail(), Toast.LENGTH_SHORT).print();
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -213,37 +211,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         VolleyPlus.parseVolleyError(error, new ParseVolleyErrorListener() {
             @Override
             public void onTimeoutError(VolleyError error) {
-                Log.i("TimeoutError: " + error.getMessage());
+                Log.print("TimeoutError: " + error.getMessage());
             }
 
             @Override
             public void onNoConnectionError(VolleyError error) {
-                Log.i("NoConnectionError: " + error.getMessage());
+                Log.print("NoConnectionError: " + error.getMessage());
             }
 
             @Override
             public void onAuthFailureError(VolleyError error) {
-                Log.i("AuthFailureError: " + error.getMessage());
+                Log.print("AuthFailureError: " + error.getMessage());
             }
 
             @Override
             public void onClientError(VolleyError error) {
-                Log.i("ClientError: " + error.getMessage());
+                Log.print("ClientError: " + error.getMessage());
             }
 
             @Override
             public void onServerError(VolleyError error) {
-                Log.i("ServerError: " + error.getMessage());
+                Log.print("ServerError: " + error.getMessage());
             }
 
             @Override
             public void onNetworkError(VolleyError error) {
-                Log.i("NetworkError: " + error.getMessage());
+                Log.print("NetworkError: " + error.getMessage());
             }
 
             @Override
             public void onParseError(VolleyError error) {
-                Log.i("ParseError: " + error.getMessage());
+                Log.print("ParseError: " + error.getMessage());
             }
         });
         Toast.makeText(MainActivity.this
@@ -256,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showResponse(Object response) {
         lastRequestTag = null;
-        Log.i(response.toString());
+        Log.print(response.toString());
         Toast.makeText(MainActivity.this
                 , "response: " + response
                 , Toast.LENGTH_LONG).show();

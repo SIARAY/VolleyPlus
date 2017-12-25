@@ -3,7 +3,7 @@ package ir.siaray.volleyplussample.util;
 import com.android.volley.DefaultRetryPolicy;
 
 /**
- * Created by Siamak on 06/08/2017.
+ * Created by SIARAY on 06/08/2017.
  */
 
 public class Constants {

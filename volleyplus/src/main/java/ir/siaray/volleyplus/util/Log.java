@@ -9,16 +9,12 @@ import java.lang.reflect.Field;
 public class Log {
     private static final String TAG = "VolleyPlus";
 
-    public static <T> void i(T param) {
+    public static <T> void print(T param) {
         android.util.Log.i(TAG, String.valueOf(param));
     }
 
-    public static <T> void print(T msg) {
-        android.util.Log.i(TAG, "" + msg);
-    }
-
-    public static String printItems(Object obj) {
-        Log.i("*** " + obj.getClass().getSimpleName() + " Values ***");
+    public static String printObject(Object obj) {
+        Log.print("*** " + obj.getClass().getSimpleName() + " Values ***");
         String result = "";
         for (Field field : obj.getClass().getDeclaredFields()) {
             field.setAccessible(true);
@@ -29,7 +25,7 @@ public class Log {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-            Log.i(name + ": " + value);
+            Log.print(name + ": " + value);
             result = result + name + ": " + value + "\n";
         }
         if (result.isEmpty())
