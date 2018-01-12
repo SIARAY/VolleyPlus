@@ -7,9 +7,9 @@ import com.android.volley.DefaultRetryPolicy;
  */
 
 public class Constants {
-    public static String jsonObjectUrl = "https://api.androidhive.info/volley/person_object.json";
-    public static String jsonArrayUrl = "https://api.androidhive.info/volley/person_array.json";
-    public static String jsonStringUrl = "https://api.androidhive.info/volley/string_response.html";
+    public static String jsonObjectUrl = "http://api.androidhive.info/volley/person_object.json";
+    public static String jsonArrayUrl = "http://api.androidhive.info/volley/person_array.json";
+    public static String jsonStringUrl = "http://api.androidhive.info/volley/string_response.html";
 
     //public static String jsonObjectUrl = "http://192.168.1.200/note-server/JsonObjectTest.php";
     //public static String jsonArrayUrl = "http://192.168.1.200/note-server/JsonArrayTest.php";

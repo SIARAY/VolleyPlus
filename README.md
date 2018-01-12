@@ -10,14 +10,14 @@ Using faster and easier than Volley
 ##### Dependency
 
     dependencies {
-        compile 'ir.siaray:volleyplus:1.0.2'
+        compile 'ir.siaray:volleyplus:1.0.3'
     }
 
 ## Usage
 
 ##### To send json object request.
 
-            JsonObjectRequest.getInstance(this, url)
+            JsonObjectRequest.getInstance(context, url)
                     .setTag(tag)
                     .setParams(params)
                     .setHeader(header)
@@ -31,7 +31,7 @@ Using faster and easier than Volley
 
 ##### To send json array request.
 
-            JsonArrayRequest.getInstance(this, url)
+            JsonArrayRequest.getInstance(context, url)
                     .setTag(tag)
                     .setParams(params)
                     .setHeader(header)
@@ -45,7 +45,7 @@ Using faster and easier than Volley
 
 ##### To send string request.
 
-            StringRequest.getInstance(this, url)
+            StringRequest.getInstance(context, url)
                     .setTag(tag)
                     .setParams(params)
                     .setHeader(header)

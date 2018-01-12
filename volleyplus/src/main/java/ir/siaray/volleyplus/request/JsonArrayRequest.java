@@ -1,13 +1,17 @@
 package ir.siaray.volleyplus.request;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
+
 import ir.siaray.volleyplus.VolleyPlus;
+import ir.siaray.volleyplus.util.VolleyUtils;
 
 import org.json.JSONArray;
 
@@ -17,7 +21,7 @@ import java.util.Map;
  * Created by SIARAY on 9/15/2017.
  */
 
-public class JsonArrayRequest extends ir.siaray.volleyplus.request.Request{
+public class JsonArrayRequest extends ir.siaray.volleyplus.request.Request {
 
     private String mUrl;
     private Context mContext;
@@ -29,6 +33,7 @@ public class JsonArrayRequest extends ir.siaray.volleyplus.request.Request{
     private int mNumberOfRetries = DefaultRetryPolicy.DEFAULT_MAX_RETRIES;
     private float mBackoffMultiplier = DefaultRetryPolicy.DEFAULT_BACKOFF_MULT;
     //..............
+    private Map<String, String> mObjectParams;
     private JSONArray mParams;
     private Listener<JSONArray> mListener;
     private ErrorListener mErrorListener;
@@ -90,6 +95,18 @@ public class JsonArrayRequest extends ir.siaray.volleyplus.request.Request{
         return this;
     }
 
+    public JsonArrayRequest setParams(Map<String, String> params) {
+        if (params != null && params.size() > 0) {
+            mObjectParams = params;
+            JSONArray jsonArray = new JSONArray();
+            for (String key : params.keySet()) {
+                jsonArray.put(params.get(key));
+            }
+            mParams = jsonArray;
+        }
+        return this;
+    }
+
     public JsonArrayRequest setListener(Listener<JSONArray> listener, ErrorListener errorListener) {
         mListener = listener;
         mErrorListener = errorListener;
@@ -102,6 +119,7 @@ public class JsonArrayRequest extends ir.siaray.volleyplus.request.Request{
     }
 
     private void sendRequest() {
+        addParamsToGetRequest();
         com.android.volley.toolbox.JsonArrayRequest jsonObjReq =
                 new com.android.volley.toolbox.JsonArrayRequest(mMethod
                         , mUrl
@@ -120,7 +138,7 @@ public class JsonArrayRequest extends ir.siaray.volleyplus.request.Request{
                     }
 
                     @Override
-                    public byte[] getBody(){
+                    public byte[] getBody() {
                         return (mBody != null) ? mBody : (super.getBody());
                     }
                 };
@@ -132,4 +150,21 @@ public class JsonArrayRequest extends ir.siaray.volleyplus.request.Request{
         VolleyPlus.getInstance().addToRequestQueue(jsonObjReq
                 , mTag);
     }
+
+    private void addParamsToGetRequest() {
+        if (mMethod == Request.Method.GET) {
+            if (mObjectParams != null) {
+                mUrl = VolleyUtils.buildGetRequestUrl(mUrl, mObjectParams);
+            } else {
+                mUrl = VolleyUtils.buildGetRequestUrl(mUrl, mParams);
+            }
+        }
+    }
+
+
+    /*private void addArrayParamsToGetRequest() {
+        if (mMethod == Request.Method.GET) {
+        }
+    }*/
+
 }

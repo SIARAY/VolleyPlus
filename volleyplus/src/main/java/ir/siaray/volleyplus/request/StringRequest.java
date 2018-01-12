@@ -1,7 +1,6 @@
 package ir.siaray.volleyplus.request;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -9,6 +8,7 @@ import com.android.volley.Request;
 import com.android.volley.Response.*;
 
 import ir.siaray.volleyplus.VolleyPlus;
+import ir.siaray.volleyplus.util.VolleyUtils;
 
 import java.util.Map;
 
@@ -16,7 +16,7 @@ import java.util.Map;
  * Created by SIARAY on 9/15/2017.
  */
 
-public class StringRequest extends ir.siaray.volleyplus.request.Request{
+public class StringRequest extends ir.siaray.volleyplus.request.Request {
 
     private String mUrl;
     private Context mContext;
@@ -94,18 +94,11 @@ public class StringRequest extends ir.siaray.volleyplus.request.Request{
     }
 
     public void send() {
-        Log.i("VolleyPlus", "mMethod:" + mMethod +
-                "\nmUrl:" + mUrl +
-                "\nmTimeout:" + mTimeout +
-                "\nmNumberOfRetries:" + mNumberOfRetries +
-                "\nmBackoffMultiplier:" + mBackoffMultiplier +
-                "\nmTag:" + mTag +
-                "\nmListener:" + mListener +
-                "\nmErrorListener:" + mErrorListener);
         sendRequest();
     }
 
     private void sendRequest() {
+        addParamsToGetRequest();
         com.android.volley.toolbox.StringRequest jsonStrReq =
                 new com.android.volley.toolbox.StringRequest(mMethod
                         , mUrl
@@ -142,6 +135,11 @@ public class StringRequest extends ir.siaray.volleyplus.request.Request{
                 , mBackoffMultiplier);
         VolleyPlus.getInstance().addToRequestQueue(jsonStrReq
                 , mTag);
+    }
 
+    private void addParamsToGetRequest() {
+        if (mMethod == Request.Method.GET) {
+            mUrl = VolleyUtils.buildGetRequestUrl(mUrl, mParams);
+        }
     }
 }

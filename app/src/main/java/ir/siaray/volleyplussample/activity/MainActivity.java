@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import static ir.siaray.volleyplussample.util.Constants.REQUEST_BACK_OFF_MULTIPLAIER;
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         StringRequest.getInstance(this, url)
                 .setTag(reqTag)
-                //.setParams(getStringRequestParameters())
+                .setParams(getStringRequestParameters())
                 .setMethod(Request.Method.GET)
                 .setListener(new Response.Listener<String>() {
                     @Override
@@ -118,7 +119,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         JsonArrayRequest.getInstance(this, url)
                 .setTag(reqTag)
-                //.setParams(getJsonArrayParameters())
+                .setParams(getJsonArrayParameters())
+                //.setParams(getStringRequestParameters())
                 .setMethod(Request.Method.GET)
                 .setListener(new Response.Listener<JSONArray>() {
                     @Override
@@ -142,7 +144,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         JsonObjectRequest.getInstance(this, url)
                 .setTag(reqTag)
-                //.setParams(getJsonObjectParameters())
+                .setParams(getJsonObjectParameters())
+                //.setParams(getStringRequestParameters())
                 //.setHeader(getHeader())
                 .setMethod(Request.Method.GET)
                 .setTimeout(REQUEST_TIME_OUT)

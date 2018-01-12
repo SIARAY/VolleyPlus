@@ -9,6 +9,7 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 
 import ir.siaray.volleyplus.VolleyPlus;
+import ir.siaray.volleyplus.util.VolleyUtils;
 
 import org.json.JSONObject;
 
@@ -85,6 +86,13 @@ public class JsonObjectRequest extends ir.siaray.volleyplus.request.Request {
         return this;
     }
 
+    public JsonObjectRequest setParams(Map<String, String> params) {
+        if (params != null) {
+            mParams = new JSONObject(params);
+        }
+        return this;
+    }
+
     public JsonObjectRequest setParams(JSONObject params) {
         mParams = params;
         return this;
@@ -101,6 +109,7 @@ public class JsonObjectRequest extends ir.siaray.volleyplus.request.Request {
     }
 
     private void sendRequest() {
+        addParamsToGetRequest();
         com.android.volley.toolbox.JsonObjectRequest jsonObjReq =
                 new com.android.volley.toolbox.JsonObjectRequest(mMethod
                         , mUrl
@@ -130,5 +139,11 @@ public class JsonObjectRequest extends ir.siaray.volleyplus.request.Request {
                 , mBackoffMultiplier);
         VolleyPlus.getInstance().addToRequestQueue(jsonObjReq
                 , mTag);
+    }
+
+    private void addParamsToGetRequest() {
+        if (mMethod == Request.Method.GET) {
+            mUrl = VolleyUtils.buildGetRequestUrl(mUrl, mParams);
+        }
     }
 }
