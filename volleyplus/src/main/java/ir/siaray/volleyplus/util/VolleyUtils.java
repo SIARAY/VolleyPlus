@@ -7,6 +7,7 @@ import com.android.volley.Cache;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -102,5 +103,9 @@ public class VolleyUtils {
             url += "?" + builder.toString();
         }
         return url;
+    }
+
+    public static String unescapeString(String text) {
+        return StringEscapeUtils.unescapeJava(text);
     }
 }

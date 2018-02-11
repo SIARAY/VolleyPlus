@@ -27,13 +27,14 @@ public class JsonObjectRequest extends ir.siaray.volleyplus.request.Request {
     private String mTag = JsonObjectRequest.class.getSimpleName();
     private Map<String, String> mHeader;
     private Request.Priority mPriority = Request.Priority.NORMAL;
-    private int mTimeout = DefaultRetryPolicy.DEFAULT_TIMEOUT_MS;
+    private int mTimeoutMs = DefaultRetryPolicy.DEFAULT_TIMEOUT_MS;
     private int mNumberOfRetries = DefaultRetryPolicy.DEFAULT_MAX_RETRIES;
     private float mBackoffMultiplier = DefaultRetryPolicy.DEFAULT_BACKOFF_MULT;
     private JSONObject mParams;
     private Listener<JSONObject> mListener;
     private ErrorListener mErrorListener;
     private byte[] mBody;
+    private boolean mShouldCache = true;
 
     private JsonObjectRequest(Context context, String url) {
         super(context);
@@ -65,8 +66,8 @@ public class JsonObjectRequest extends ir.siaray.volleyplus.request.Request {
         return this;
     }
 
-    public JsonObjectRequest setTimeout(int timeout) {
-        mTimeout = timeout;
+    public JsonObjectRequest setTimeout(int timeoutMs) {
+        mTimeoutMs = timeoutMs;
         return this;
     }
 
@@ -132,12 +133,12 @@ public class JsonObjectRequest extends ir.siaray.volleyplus.request.Request {
                         return (mBody != null) ? mBody : (super.getBody());
                     }
                 };
-
+        jsonObjReq.setShouldCache(mShouldCache);
         VolleyPlus.setTimeoutRequest(jsonObjReq
-                , mTimeout
+                , mTimeoutMs
                 , mNumberOfRetries
                 , mBackoffMultiplier);
-        VolleyPlus.getInstance().addToRequestQueue(jsonObjReq
+        VolleyPlus.getInstance(mContext).addToRequestQueue(jsonObjReq
                 , mTag);
     }
 
@@ -146,4 +147,10 @@ public class JsonObjectRequest extends ir.siaray.volleyplus.request.Request {
             mUrl = VolleyUtils.buildGetRequestUrl(mUrl, mParams);
         }
     }
+
+    public JsonObjectRequest setShouldCache(boolean shouldCache) {
+        mShouldCache = shouldCache;
+        return this;
+    }
+
 }

@@ -1,7 +1,11 @@
 package ir.siaray.volleyplus;
 
+import android.app.Activity;
 import android.content.Context;
+import android.text.Html;
 import android.text.TextUtils;
+import android.util.Xml;
+import android.webkit.URLUtil;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
@@ -12,19 +16,30 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import ir.siaray.volleyplus.listener.ParseVolleyErrorListener;
 import ir.siaray.volleyplus.util.Log;
 import ir.siaray.volleyplus.util.LruBitmapCache;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.Base64;
+import java.util.Map;
 
 import ir.siaray.volleyplus.util.LruBitmapCache;
+import ir.siaray.volleyplus.util.VolleyUtils;
 
 /**
  * Created by SIARAY on 9/15/2017.
@@ -33,17 +48,30 @@ import ir.siaray.volleyplus.util.LruBitmapCache;
 public class VolleyPlus {
     private static final String TAG = VolleyPlus.class.getSimpleName();
     private static VolleyPlus mInstance;
-    private Context mContext;
+    private static Context mContext;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
 
     private VolleyPlus(Context context) {
+        /*if (context instanceof Activity)
+            mContext = context.getApplicationContext();
+        else*/
         mContext = context.getApplicationContext();
         mInstance = this;
     }
 
-    public static VolleyPlus initialize(Context context) {
+    public static Context getContext() {
+        return mContext;
+    }
+    /*private static VolleyPlus initialize(Context context) {
         return new VolleyPlus(context);
+    }*/
+
+    public static VolleyPlus getInstance(Context context) {
+        if (mInstance == null || mContext == null) {
+            return new VolleyPlus(context);
+        }
+        return mInstance;
     }
 
     public static VolleyPlus getInstance() {
@@ -55,7 +83,6 @@ public class VolleyPlus {
         if (mRequestQueue == null) {
             mRequestQueue = Volley.newRequestQueue(mContext);
         }
-
         return mRequestQueue;
     }
 
@@ -87,14 +114,16 @@ public class VolleyPlus {
         return false;
     }
 
-    public static String getCache(String url) {
+    public static String getCache(Context context, String url) {
         //دریافت دیتای کش شده برای url خاص
-        Cache cache = VolleyPlus.getInstance().getRequestQueue().getCache();
+
+        Cache cache = VolleyPlus.getInstance(context).getRequestQueue().getCache();
         Cache.Entry entry = cache.get(url);
         if (entry != null) {
             try {
                 String data = new String(entry.data, "UTF-8");
-                // handle data, like converting it to xml, json, bitmap etc.,
+                data = VolleyUtils.unescapeString(data);
+                // handle data, like converting it to xml, json, bitmap etc.
                 return data;
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -106,13 +135,58 @@ public class VolleyPlus {
         return null;
     }
 
+    public static String getCacheForGetRequest(Context context
+            , String url
+            , Map<String, String> params) {
+        return getCache(context, VolleyUtils.buildGetRequestUrl(url, params));
+    }
+
+    public static String getCacheForGetRequest(Context context
+            , String url
+            , JSONObject params) {
+        return getCache(context, VolleyUtils.buildGetRequestUrl(url, params));
+    }
+
+    public static String getCacheForGetRequest(Context context
+            , String url
+            , JSONArray params) {
+        return getCache(context, VolleyUtils.buildGetRequestUrl(url, params));
+    }
+
     /**
      * بی اعتبار کردن (باطل کردن) کش برای url خاص (کش حذف نمی شود)
      *
      * @param url
      */
-    public static void invalidateVolleyCache(String url) {
-        VolleyPlus.getInstance().getRequestQueue().getCache().invalidate(url, true);
+    public static void invalidateCache(Context context, String url) {
+        VolleyPlus.getInstance(context).getRequestQueue().getCache().invalidate(url, true);
+    }
+
+    public static void invalidateCacheForGetRequest(Context context
+            , String url
+            , Map<String, String> params) {
+        VolleyPlus.getInstance(context)
+                .getRequestQueue()
+                .getCache()
+                .invalidate(VolleyUtils.buildGetRequestUrl(url, params), true);
+    }
+
+    public static void invalidateCacheForGetRequest(Context context
+            , String url
+            , JSONObject params) {
+        VolleyPlus.getInstance(context)
+                .getRequestQueue()
+                .getCache()
+                .invalidate(VolleyUtils.buildGetRequestUrl(url, params), true);
+    }
+
+    public static void invalidateCacheForGetRequest(Context context
+            , String url
+            , JSONArray params) {
+        VolleyPlus.getInstance(context)
+                .getRequestQueue()
+                .getCache()
+                .invalidate(VolleyUtils.buildGetRequestUrl(url, params), true);
     }
 
     /**
@@ -129,21 +203,59 @@ public class VolleyPlus {
      *
      * @param url
      */
-    public static void clearCache(String url) {
-        VolleyPlus.getInstance().getRequestQueue().getCache().remove(url);
+    public static void clearCache(Context context, String url) {
+        VolleyPlus.getInstance(context).getRequestQueue().getCache().remove(url);
+    }
+
+    public static void clearCacheForGetRequest(Context context
+            , String url
+            , Map<String, String> params) {
+        VolleyPlus.getInstance(context)
+                .getRequestQueue()
+                .getCache()
+                .remove(VolleyUtils.buildGetRequestUrl(url, params));
+    }
+
+    public static void clearCacheForGetRequest(Context context
+            , String url
+            , JSONObject params) {
+        VolleyPlus.getInstance(context)
+                .getRequestQueue()
+                .getCache()
+                .remove(VolleyUtils.buildGetRequestUrl(url, params));
+    }
+
+    public static void clearCacheForGetRequest(Context context
+            , String url
+            , JSONArray params) {
+        VolleyPlus.getInstance(context)
+                .getRequestQueue()
+                .getCache()
+                .remove(VolleyUtils.buildGetRequestUrl(url, params));
     }
 
     /**
      * حذف تمامی کش(Cache)ها
      */
-    public static void clearCache() {
-        VolleyPlus.getInstance().getRequestQueue().getCache().clear();
+    public static boolean clearCache(Context context) {
+        VolleyPlus instance = VolleyPlus.getInstance(context);
+        if (instance != null) {
+            RequestQueue queue = instance.getRequestQueue();
+            if (queue != null) {
+                Cache cache = queue.getCache();
+                if (cache != null) {
+                    cache.clear();
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
-    public static boolean cancelRequest(String request) {
+    public static boolean cancelRequest(Context context, String request) {
         if (request != null) {
             //VolleyPlus.getInstance().getRequestQueue().cancelAll(request);
-            if (getInstance().cancelPendingRequests(request))
+            if (getInstance(context).cancelPendingRequests(request))
                 return true;
         }
         //Request is null (The request can not be canceled)

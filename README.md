@@ -3,14 +3,14 @@ Using faster and easier than Volley
 
 ## Screenshots
 
-![Screenshot](https://s1.gifyu.com/images/volleyplus-v1.0.1.gif)
+![Screenshot](https://s1.gifyu.com/images/volleyplus-v1.0.4.gif)
 
 ## Getting started
 
 ##### Dependency
 
     dependencies {
-        compile 'ir.siaray:volleyplus:1.0.3'
+        compile 'ir.siaray:volleyplus:1.0.4'
     }
 
 ## Usage
@@ -22,7 +22,7 @@ Using faster and easier than Volley
                     .setParams(params)
                     .setHeader(header)
                     .setMethod(method)
-                    .setTimeout(timeout)
+                    .setTimeout(timeoutMs)
                     .setNumberOfRetries(numOfRetry)
                     .setBackoffMultiplier(backoffMultiplier)
                     .setPriority(priority)
@@ -36,7 +36,7 @@ Using faster and easier than Volley
                     .setParams(params)
                     .setHeader(header)
                     .setMethod(method)
-                    .setTimeout(timeout)
+                    .setTimeout(timeoutMs)
                     .setNumberOfRetries(numOfRetry)
                     .setBackoffMultiplier(backoffMultiplier)
                     .setPriority(priority)
@@ -50,7 +50,7 @@ Using faster and easier than Volley
                     .setParams(params)
                     .setHeader(header)
                     .setMethod(method)
-                    .setTimeout(timeout)
+                    .setTimeout(timeoutMs)
                     .setNumberOfRetries(numOfRetry)
                     .setBackoffMultiplier(backoffMultiplier)
                     .setPriority(priority)

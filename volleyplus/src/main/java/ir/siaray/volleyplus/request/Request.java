@@ -9,11 +9,13 @@ import ir.siaray.volleyplus.util.Log;
  * Created by SIARAY on 10/30/2017.
  */
 
-public class Request {
+public abstract class Request {
+
     public Request(Context context) {
-        if (VolleyPlus.getInstance() == null) {
+        /*if (VolleyPlus.getInstance(context) == null) {
             VolleyPlus.initialize(context);
-        }
+        }*/
+        VolleyPlus.getInstance(context);
     }
 }
 

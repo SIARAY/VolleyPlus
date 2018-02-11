@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,19 +9,58 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#444"
-        android:gravity="center"
+        android:background="#222"
+        android:gravity="top|center_horizontal"
         android:paddingLeft="30dp"
         android:paddingRight="30dp">
 
+        <RelativeLayout
+            android:id="@+id/headerContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="170dp"
+            android:background="#5555"
+            android:layout_marginRight="3dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="20dp">
+
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/svContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tvResponse"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentTop="true"
+                        android:layout_margin="5dp"
+                        android:text=""
+                        android:textColor="#fff"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+            </android.support.v4.widget.NestedScrollView>
+
+            <ProgressBar
+                android:id="@+id/progressbar"
+                style="@style/Base.Widget.AppCompat.ProgressBar"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:indeterminateTint="#fff"
+                android:layout_centerInParent="true"
+                android:visibility="invisible" />
+        </RelativeLayout>
 
         <Button
             android:id="@+id/btnJsonObject"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
-            android:layout_alignParentTop="true"
+            android:layout_below="@+id/headerContainer"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="#c902d7"
             android:text="Json Object Request"
             android:textColor="#fff" />
@@ -32,7 +71,7 @@
             android:layout_height="@dimen/button_height"
             android:layout_below="@id/btnJsonObject"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="15dp"
             android:backgroundTint="#2aac02"
             android:text="Json Array Request"
             android:textColor="#fff" />
@@ -43,9 +82,9 @@
             android:layout_height="@dimen/button_height"
             android:layout_below="@id/btnJsonArray"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="15dp"
             android:backgroundTint="#018fd6"
-            android:text="Json String Request"
+            android:text="String Request"
             android:textColor="#fff" />
 
         <Button
@@ -54,18 +93,34 @@
             android:layout_height="@dimen/button_height"
             android:layout_below="@id/btnJsonString"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="15dp"
             android:backgroundTint="#de0000"
             android:text="Cancel Request"
             android:textColor="#fff" />
 
-        <ProgressBar
-            android:id="@+id/progressbar"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_below="@+id/btnCancelRequest"
+        <Button
+            android:id="@+id/btnClearCache"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_below="@id/btnCancelRequest"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="35dp"
-            android:visibility="invisible" />
+            android:layout_marginTop="15dp"
+            android:backgroundTint="#ed8600"
+            android:text="Clear Volley Cache"
+            android:textColor="#fff" />
+
+
+        <Button
+            android:id="@+id/btnGetCache"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_below="@id/btnClearCache"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="#04966c"
+            android:text="Get Volley Cache"
+            android:textColor="#fff" />
+
+
     </RelativeLayout>
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>

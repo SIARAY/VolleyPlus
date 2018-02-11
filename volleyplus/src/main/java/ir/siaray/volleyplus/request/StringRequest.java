@@ -4,12 +4,21 @@ import android.content.Context;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
+import com.android.volley.Response;
 import com.android.volley.Response.*;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.HttpResponse;
 
 import ir.siaray.volleyplus.VolleyPlus;
+import ir.siaray.volleyplus.util.Log;
 import ir.siaray.volleyplus.util.VolleyUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Map;
 
 /**
@@ -24,13 +33,14 @@ public class StringRequest extends ir.siaray.volleyplus.request.Request {
     private String mTag;
     private Map<String, String> mHeader;
     private Request.Priority mPriority = Request.Priority.NORMAL;
-    private int mTimeout = DefaultRetryPolicy.DEFAULT_TIMEOUT_MS;
+    private int mTimeoutMs = DefaultRetryPolicy.DEFAULT_TIMEOUT_MS;
     private int mNumberOfRetries = DefaultRetryPolicy.DEFAULT_MAX_RETRIES;
     private float mBackoffMultiplier = DefaultRetryPolicy.DEFAULT_BACKOFF_MULT;
     private Map<String, String> mParams;
     private Listener<String> mListener;
     private ErrorListener mErrorListener;
     private byte[] mBody;
+    private boolean mShouldCache = true;
 
     private StringRequest(Context context, String url) {
         super(context);
@@ -62,8 +72,8 @@ public class StringRequest extends ir.siaray.volleyplus.request.Request {
         return this;
     }
 
-    public StringRequest setTimeout(int timeout) {
-        mTimeout = timeout;
+    public StringRequest setTimeout(int timeoutMs) {
+        mTimeoutMs = timeoutMs;
         return this;
     }
 
@@ -99,7 +109,7 @@ public class StringRequest extends ir.siaray.volleyplus.request.Request {
 
     private void sendRequest() {
         addParamsToGetRequest();
-        com.android.volley.toolbox.StringRequest jsonStrReq =
+        com.android.volley.toolbox.StringRequest stringReq =
                 new com.android.volley.toolbox.StringRequest(mMethod
                         , mUrl
                         , mListener
@@ -128,12 +138,12 @@ public class StringRequest extends ir.siaray.volleyplus.request.Request {
                     }
 
                 };
-
-        VolleyPlus.setTimeoutRequest(jsonStrReq
-                , mTimeout
+        stringReq.setShouldCache(mShouldCache);
+        VolleyPlus.setTimeoutRequest(stringReq
+                , mTimeoutMs
                 , mNumberOfRetries
                 , mBackoffMultiplier);
-        VolleyPlus.getInstance().addToRequestQueue(jsonStrReq
+        VolleyPlus.getInstance(mContext).addToRequestQueue(stringReq
                 , mTag);
     }
 
@@ -141,5 +151,10 @@ public class StringRequest extends ir.siaray.volleyplus.request.Request {
         if (mMethod == Request.Method.GET) {
             mUrl = VolleyUtils.buildGetRequestUrl(mUrl, mParams);
         }
+    }
+
+    public StringRequest setShouldCache(boolean shouldCache) {
+        mShouldCache = shouldCache;
+        return this;
     }
 }

@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
  */
 
 public class Log {
-    private static final String TAG = "VolleyPlus";
+    private static final String TAG = "VolleyPlusLog";
 
     public static <T> void print(T param) {
         android.util.Log.i(TAG, String.valueOf(param));
