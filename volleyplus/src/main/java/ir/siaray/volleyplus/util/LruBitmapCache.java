@@ -1,13 +1,13 @@
 package ir.siaray.volleyplus.util;
 
-/**
- * Created by Siamak on 05/08/2017.
- */
-
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
 
 import com.android.volley.toolbox.ImageLoader.ImageCache;
+
+/**
+ * Created by Siamak on 05/08/2017.
+ */
 
 public class LruBitmapCache extends LruCache<String, Bitmap> implements
         ImageCache {

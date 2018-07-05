@@ -1,12 +1,5 @@
 package ir.siaray.volleyplus.listener;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.ClientError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 
 /**

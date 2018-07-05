@@ -1,11 +1,7 @@
 package ir.siaray.volleyplus;
 
-import android.app.Activity;
 import android.content.Context;
-import android.text.Html;
 import android.text.TextUtils;
-import android.util.Xml;
-import android.webkit.URLUtil;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
@@ -16,29 +12,17 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import ir.siaray.volleyplus.listener.ParseVolleyErrorListener;
-import ir.siaray.volleyplus.util.Log;
 import ir.siaray.volleyplus.util.LruBitmapCache;
-
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.Base64;
 import java.util.Map;
-
-import ir.siaray.volleyplus.util.LruBitmapCache;
 import ir.siaray.volleyplus.util.VolleyUtils;
 
 /**
@@ -53,9 +37,6 @@ public class VolleyPlus {
     private ImageLoader mImageLoader;
 
     private VolleyPlus(Context context) {
-        /*if (context instanceof Activity)
-            mContext = context.getApplicationContext();
-        else*/
         mContext = context.getApplicationContext();
         mInstance = this;
     }
@@ -63,9 +44,6 @@ public class VolleyPlus {
     public static Context getContext() {
         return mContext;
     }
-    /*private static VolleyPlus initialize(Context context) {
-        return new VolleyPlus(context);
-    }*/
 
     public static VolleyPlus getInstance(Context context) {
         if (mInstance == null || mContext == null) {

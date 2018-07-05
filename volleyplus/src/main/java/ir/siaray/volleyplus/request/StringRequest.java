@@ -4,21 +4,10 @@ import android.content.Context;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
-import com.android.volley.ParseError;
 import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.Response.*;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.HttpResponse;
-
 import ir.siaray.volleyplus.VolleyPlus;
-import ir.siaray.volleyplus.util.Log;
 import ir.siaray.volleyplus.util.VolleyUtils;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.Map;
 
 /**

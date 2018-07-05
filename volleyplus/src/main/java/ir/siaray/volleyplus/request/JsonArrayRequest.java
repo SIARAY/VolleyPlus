@@ -1,19 +1,13 @@
 package ir.siaray.volleyplus.request;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
-
 import ir.siaray.volleyplus.VolleyPlus;
-import ir.siaray.volleyplus.util.Log;
 import ir.siaray.volleyplus.util.VolleyUtils;
 
 import org.json.JSONArray;

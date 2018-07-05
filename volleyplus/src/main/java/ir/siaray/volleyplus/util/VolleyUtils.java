@@ -1,19 +1,10 @@
 package ir.siaray.volleyplus.util;
 
 import android.text.TextUtils;
-import android.widget.Toast;
-
-import com.android.volley.Cache;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import ir.siaray.volleyplus.VolleyPlus;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Iterator;
